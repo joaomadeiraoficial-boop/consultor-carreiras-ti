@@ -1,0 +1,112 @@
+[
+  {
+    "nome": "Desenvolvedor de APIs",
+    "esperada": "backend",
+    "respostas": {
+      "matematica": "media",
+      "atividade": "backend",
+      "ferramenta": "sql",
+      "entrega": "funcionalidades",
+      "estilo": "programar"
+    }
+  },
+  {
+    "nome": "Designer de interfaces",
+    "esperada": "frontend",
+    "respostas": {
+      "matematica": "baixa",
+      "atividade": "frontend",
+      "ferramenta": "javascript",
+      "entrega": "experiencia",
+      "estilo": "criar"
+    }
+  },
+  {
+    "nome": "Analista preditivo",
+    "esperada": "ciencia",
+    "respostas": {
+      "matematica": "alta",
+      "atividade": "ciencia",
+      "ferramenta": "python",
+      "entrega": "previsoes",
+      "estilo": "analisar"
+    }
+  },
+  {
+    "nome": "Arquiteta de dados",
+    "esperada": "engenharia",
+    "respostas": {
+      "matematica": "media",
+      "atividade": "engenharia",
+      "ferramenta": "sql",
+      "entrega": "dados",
+      "estilo": "estruturar"
+    }
+  },
+  {
+    "nome": "Investigador de segurança",
+    "esperada": "seguranca",
+    "respostas": {
+      "matematica": "media",
+      "atividade": "seguranca",
+      "ferramenta": "linux",
+      "entrega": "protecao",
+      "estilo": "investigar"
+    }
+  },
+  {
+    "nome": "Automatizadora de deploys",
+    "esperada": "devops",
+    "respostas": {
+      "matematica": "baixa",
+      "atividade": "devops",
+      "ferramenta": "linux",
+      "entrega": "entrega_continua",
+      "estilo": "automatizar"
+    }
+  },
+  {
+    "nome": "Arquiteto de nuvem",
+    "esperada": "cloud",
+    "respostas": {
+      "matematica": "media",
+      "atividade": "cloud",
+      "ferramenta": "cloud",
+      "entrega": "escala",
+      "estilo": "operar"
+    }
+  },
+  {
+    "nome": "Criadora de aplicativos",
+    "esperada": "mobile",
+    "respostas": {
+      "matematica": "baixa",
+      "atividade": "mobile",
+      "ferramenta": "mobile",
+      "entrega": "aplicativos",
+      "estilo": "programar"
+    }
+  },
+  {
+    "nome": "Analista de qualidade",
+    "esperada": "qa",
+    "respostas": {
+      "matematica": "media",
+      "atividade": "qa",
+      "ferramenta": "testes",
+      "entrega": "qualidade",
+      "estilo": "testar"
+    }
+  },
+  {
+    "nome": "Gestora de produto",
+    "esperada": "produto",
+    "respostas": {
+      "matematica": "baixa",
+      "atividade": "produto",
+      "ferramenta": "gestao",
+      "entrega": "negocio",
+      "estilo": "coordenar"
+    }
+  }
+]

@@ -1,0 +1,47 @@
+﻿Regra;Trilha;Condições SE;Pontuação ENTÃO;Justificativa;Tipo
+R01;Desenvolvimento Back-end;atividade = backend;3;Você prefere tarefas cotidianas ligadas a Desenvolvimento Back-end.;afinidade de atuação
+R02;Desenvolvimento Back-end;atividade = backend E entrega = funcionalidades;8;Sua atividade favorita combina com o resultado típico de Desenvolvimento Back-end.;atividade + entrega
+R03;Desenvolvimento Back-end;atividade = backend E ferramenta = python ou sql;4;Suas ferramentas têm aplicação direta na atividade escolhida para Desenvolvimento Back-end.;atividade + ferramenta
+R04;Desenvolvimento Back-end;entrega = funcionalidades E estilo = programar;5;O modo de trabalho escolhido ajuda a entregar valor em Desenvolvimento Back-end.;entrega + estilo
+R05;Desenvolvimento Front-end & UI/UX;atividade = frontend;3;Você prefere tarefas cotidianas ligadas a Desenvolvimento Front-end & UI/UX.;afinidade de atuação
+R06;Desenvolvimento Front-end & UI/UX;atividade = frontend E entrega = experiencia;8;Sua atividade favorita combina com o resultado típico de Desenvolvimento Front-end & UI/UX.;atividade + entrega
+R07;Desenvolvimento Front-end & UI/UX;atividade = frontend E ferramenta = javascript ou design;4;Suas ferramentas têm aplicação direta na atividade escolhida para Desenvolvimento Front-end & UI/UX.;atividade + ferramenta
+R08;Desenvolvimento Front-end & UI/UX;entrega = experiencia E estilo = criar;5;O modo de trabalho escolhido ajuda a entregar valor em Desenvolvimento Front-end & UI/UX.;entrega + estilo
+R09;Ciência de Dados e Machine Learning;atividade = ciencia;3;Você prefere tarefas cotidianas ligadas a Ciência de Dados e Machine Learning.;afinidade de atuação
+R10;Ciência de Dados e Machine Learning;atividade = ciencia E entrega = previsoes;8;Sua atividade favorita combina com o resultado típico de Ciência de Dados e Machine Learning.;atividade + entrega
+R11;Ciência de Dados e Machine Learning;atividade = ciencia E ferramenta = python ou sql;4;Suas ferramentas têm aplicação direta na atividade escolhida para Ciência de Dados e Machine Learning.;atividade + ferramenta
+R12;Ciência de Dados e Machine Learning;entrega = previsoes E estilo = analisar;5;O modo de trabalho escolhido ajuda a entregar valor em Ciência de Dados e Machine Learning.;entrega + estilo
+R13;Engenharia de Dados;atividade = engenharia;3;Você prefere tarefas cotidianas ligadas a Engenharia de Dados.;afinidade de atuação
+R14;Engenharia de Dados;atividade = engenharia E entrega = dados;8;Sua atividade favorita combina com o resultado típico de Engenharia de Dados.;atividade + entrega
+R15;Engenharia de Dados;atividade = engenharia E ferramenta = sql ou python;4;Suas ferramentas têm aplicação direta na atividade escolhida para Engenharia de Dados.;atividade + ferramenta
+R16;Engenharia de Dados;entrega = dados E estilo = estruturar;5;O modo de trabalho escolhido ajuda a entregar valor em Engenharia de Dados.;entrega + estilo
+R17;Cibersegurança (Security / Pentesting);atividade = seguranca;3;Você prefere tarefas cotidianas ligadas a Cibersegurança (Security / Pentesting).;afinidade de atuação
+R18;Cibersegurança (Security / Pentesting);atividade = seguranca E entrega = protecao;8;Sua atividade favorita combina com o resultado típico de Cibersegurança (Security / Pentesting).;atividade + entrega
+R19;Cibersegurança (Security / Pentesting);atividade = seguranca E ferramenta = linux ou python;4;Suas ferramentas têm aplicação direta na atividade escolhida para Cibersegurança (Security / Pentesting).;atividade + ferramenta
+R20;Cibersegurança (Security / Pentesting);entrega = protecao E estilo = investigar;5;O modo de trabalho escolhido ajuda a entregar valor em Cibersegurança (Security / Pentesting).;entrega + estilo
+R21;DevOps & SRE;atividade = devops;3;Você prefere tarefas cotidianas ligadas a DevOps & SRE.;afinidade de atuação
+R22;DevOps & SRE;atividade = devops E entrega = entrega_continua;8;Sua atividade favorita combina com o resultado típico de DevOps & SRE.;atividade + entrega
+R23;DevOps & SRE;atividade = devops E ferramenta = linux ou cloud;4;Suas ferramentas têm aplicação direta na atividade escolhida para DevOps & SRE.;atividade + ferramenta
+R24;DevOps & SRE;entrega = entrega_continua E estilo = automatizar;5;O modo de trabalho escolhido ajuda a entregar valor em DevOps & SRE.;entrega + estilo
+R25;Computação em Nuvem (Cloud Architecture);atividade = cloud;3;Você prefere tarefas cotidianas ligadas a Computação em Nuvem (Cloud Architecture).;afinidade de atuação
+R26;Computação em Nuvem (Cloud Architecture);atividade = cloud E entrega = escala;8;Sua atividade favorita combina com o resultado típico de Computação em Nuvem (Cloud Architecture).;atividade + entrega
+R27;Computação em Nuvem (Cloud Architecture);atividade = cloud E ferramenta = cloud ou linux;4;Suas ferramentas têm aplicação direta na atividade escolhida para Computação em Nuvem (Cloud Architecture).;atividade + ferramenta
+R28;Computação em Nuvem (Cloud Architecture);entrega = escala E estilo = operar;5;O modo de trabalho escolhido ajuda a entregar valor em Computação em Nuvem (Cloud Architecture).;entrega + estilo
+R29;Desenvolvimento Mobile;atividade = mobile;3;Você prefere tarefas cotidianas ligadas a Desenvolvimento Mobile.;afinidade de atuação
+R30;Desenvolvimento Mobile;atividade = mobile E entrega = aplicativos;8;Sua atividade favorita combina com o resultado típico de Desenvolvimento Mobile.;atividade + entrega
+R31;Desenvolvimento Mobile;atividade = mobile E ferramenta = mobile ou javascript;4;Suas ferramentas têm aplicação direta na atividade escolhida para Desenvolvimento Mobile.;atividade + ferramenta
+R32;Desenvolvimento Mobile;entrega = aplicativos E estilo = programar;5;O modo de trabalho escolhido ajuda a entregar valor em Desenvolvimento Mobile.;entrega + estilo
+R33;Engenharia de Qualidade e Testes (QA);atividade = qa;3;Você prefere tarefas cotidianas ligadas a Engenharia de Qualidade e Testes (QA).;afinidade de atuação
+R34;Engenharia de Qualidade e Testes (QA);atividade = qa E entrega = qualidade;8;Sua atividade favorita combina com o resultado típico de Engenharia de Qualidade e Testes (QA).;atividade + entrega
+R35;Engenharia de Qualidade e Testes (QA);atividade = qa E ferramenta = testes ou python;4;Suas ferramentas têm aplicação direta na atividade escolhida para Engenharia de Qualidade e Testes (QA).;atividade + ferramenta
+R36;Engenharia de Qualidade e Testes (QA);entrega = qualidade E estilo = testar;5;O modo de trabalho escolhido ajuda a entregar valor em Engenharia de Qualidade e Testes (QA).;entrega + estilo
+R37;Gestão de Produtos (Product Management);atividade = produto;3;Você prefere tarefas cotidianas ligadas a Gestão de Produtos (Product Management).;afinidade de atuação
+R38;Gestão de Produtos (Product Management);atividade = produto E entrega = negocio;8;Sua atividade favorita combina com o resultado típico de Gestão de Produtos (Product Management).;atividade + entrega
+R39;Gestão de Produtos (Product Management);atividade = produto E ferramenta = gestao ou design;4;Suas ferramentas têm aplicação direta na atividade escolhida para Gestão de Produtos (Product Management).;atividade + ferramenta
+R40;Gestão de Produtos (Product Management);entrega = negocio E estilo = coordenar;5;O modo de trabalho escolhido ajuda a entregar valor em Gestão de Produtos (Product Management).;entrega + estilo
+R41;Ciência de Dados e Machine Learning;atividade = ciencia E matematica = alta;3;Afinidade matemática alta favorece modelagem estatística e preditiva.;matemática + modelagem
+R42;Engenharia de Dados;atividade = engenharia E entrega = dados E estilo = estruturar;3;Seu foco é construir e organizar fluxos de dados, mais do que prever resultados.;diferenciação dados/ML
+R43;DevOps & SRE;atividade = devops E entrega = entrega_continua E estilo = automatizar;2;Automação de entrega e confiabilidade apontam para DevOps/SRE.;diferenciação DevOps/Cloud
+R44;Computação em Nuvem (Cloud Architecture);atividade = cloud E entrega = escala E estilo = operar;2;Arquitetura escalável e operação de infraestrutura apontam para Cloud.;diferenciação Cloud/DevOps
+R45;Engenharia de Qualidade e Testes (QA);entrega = qualidade E ferramenta = testes E estilo = testar;2;Ferramentas e rotina de testes reforçam qualidade de software.;validação QA
+R46;Gestão de Produtos (Product Management);entrega = negocio E ferramenta = gestao E estilo = coordenar;2;Priorização e coordenação orientadas a negócio reforçam Gestão de Produtos.;validação produto
