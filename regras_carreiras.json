@@ -1,0 +1,518 @@
+{
+  "versao": "2.0-etapa2",
+  "observacao": "Os pesos sao hipoteses iniciais para fins didaticos. Nao medem probabilidades reais de sucesso profissional.",
+  "escala_afinidade": {
+    "minimo": 1,
+    "maximo": 5,
+    "rotulos": {
+      "1": "Nenhuma afinidade",
+      "2": "Pouca afinidade",
+      "3": "Afinidade moderada",
+      "4": "Alta afinidade",
+      "5": "Muito alta afinidade"
+    }
+  },
+  "dimensoes": {
+    "logica": {
+      "titulo": "Lógica e programação",
+      "pergunta": "Quanto você gosta de resolver problemas criando algoritmos?"
+    },
+    "matematica_estatistica": {
+      "titulo": "Matemática e estatística",
+      "pergunta": "Quanto você gosta de cálculos, probabilidades e estatística?"
+    },
+    "design_ux": {
+      "titulo": "Design e experiência do usuário",
+      "pergunta": "Quanto você gosta de criar interfaces e melhorar a experiência das pessoas?"
+    },
+    "modelagem_preditiva": {
+      "titulo": "Análise preditiva",
+      "pergunta": "Quanto você gosta de investigar padrões e fazer previsões a partir de dados?"
+    },
+    "pipelines_dados": {
+      "titulo": "Pipelines e transformação de dados",
+      "pergunta": "Quanto você gosta de organizar, integrar e transportar dados entre sistemas?"
+    },
+    "seguranca": {
+      "titulo": "Segurança da informação",
+      "pergunta": "Quanto você gosta de investigar vulnerabilidades e proteger sistemas?"
+    },
+    "automacao": {
+      "titulo": "Automação e implantação",
+      "pergunta": "Quanto você gosta de automatizar processos, deploys e monitoramento?"
+    },
+    "nuvem": {
+      "titulo": "Infraestrutura e computação em nuvem",
+      "pergunta": "Quanto você gosta de planejar e manter servidores e arquiteturas em nuvem?"
+    },
+    "mobile": {
+      "titulo": "Aplicativos móveis",
+      "pergunta": "Quanto você gosta de desenvolver aplicativos para dispositivos móveis?"
+    },
+    "testes_qualidade": {
+      "titulo": "Testes e qualidade",
+      "pergunta": "Quanto você gosta de verificar requisitos, prevenir falhas e automatizar testes?"
+    },
+    "gestao_produto": {
+      "titulo": "Gestão de produto e negócio",
+      "pergunta": "Quanto você gosta de definir prioridades e criar soluções para problemas de negócio?"
+    },
+    "comunicacao": {
+      "titulo": "Comunicação e colaboração",
+      "pergunta": "Quanto você gosta de conversar com usuários, alinhar necessidades e colaborar com equipes?"
+    },
+    "bancos_dados": {
+      "titulo": "Bancos de dados",
+      "pergunta": "Quanto você gosta de modelar, consultar e organizar informações em bancos de dados?"
+    }
+  },
+  "parametros_inferencia": {
+    "metodo": "media_ponderada_normalizada",
+    "formula_planejada": "100 * soma(peso * (resposta - 1) / 4) / soma(pesos)",
+    "limiar_baixa_afinidade": 2,
+    "penalidade_logica_planejada": 8,
+    "observacao": "Formula e penalidades serao implementadas no proximo commit, nao nesta etapa de modelagem."
+  },
+  "trilhas": {
+    "backend": {
+      "nome": "Desenvolvimento Back-end",
+      "resumo": "Criação de APIs, servidores, lógica de negócio e integração com bancos de dados.",
+      "exemplo": "Construir uma API de vendas com autenticação e persistência.",
+      "aprender": [
+        "Python ou Java",
+        "APIs REST",
+        "SQL",
+        "Testes de API"
+      ],
+      "pesos": {
+        "logica": 5,
+        "matematica_estatistica": 1,
+        "design_ux": 1,
+        "modelagem_preditiva": 0,
+        "pipelines_dados": 2,
+        "seguranca": 2,
+        "automacao": 2,
+        "nuvem": 1,
+        "mobile": 0,
+        "testes_qualidade": 3,
+        "gestao_produto": 1,
+        "comunicacao": 1,
+        "bancos_dados": 5
+      },
+      "competencias_junior": [
+        {
+          "id": "backend_habilidade_1",
+          "nome": "Lógica e programação",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "backend_habilidade_2",
+          "nome": "APIs REST",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "backend_habilidade_3",
+          "nome": "SQL e bancos de dados",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Construir uma API de vendas com autenticação e persistência."
+    },
+    "frontend": {
+      "nome": "Desenvolvimento Front-end & UI/UX",
+      "resumo": "Interfaces web responsivas e experiências fáceis de usar.",
+      "exemplo": "Criar o painel visual de uma loja virtual.",
+      "aprender": [
+        "HTML/CSS",
+        "JavaScript",
+        "React",
+        "Acessibilidade"
+      ],
+      "pesos": {
+        "logica": 3,
+        "matematica_estatistica": 0,
+        "design_ux": 5,
+        "modelagem_preditiva": 0,
+        "pipelines_dados": 0,
+        "seguranca": 1,
+        "automacao": 1,
+        "nuvem": 0,
+        "mobile": 1,
+        "testes_qualidade": 3,
+        "gestao_produto": 2,
+        "comunicacao": 3,
+        "bancos_dados": 1
+      },
+      "competencias_junior": [
+        {
+          "id": "frontend_habilidade_1",
+          "nome": "HTML e CSS",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "frontend_habilidade_2",
+          "nome": "JavaScript",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "frontend_habilidade_3",
+          "nome": "Interfaces acessíveis e responsivas",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Criar o painel visual de uma loja virtual."
+    },
+    "ciencia": {
+      "nome": "Ciência de Dados e Machine Learning",
+      "resumo": "Estatística, análise exploratória e modelos para explicar ou prever comportamentos.",
+      "exemplo": "Prever demanda de produtos com um modelo estatístico.",
+      "aprender": [
+        "Python",
+        "Estatística",
+        "Pandas",
+        "Scikit-learn"
+      ],
+      "pesos": {
+        "logica": 3,
+        "matematica_estatistica": 5,
+        "design_ux": 1,
+        "modelagem_preditiva": 5,
+        "pipelines_dados": 2,
+        "seguranca": 0,
+        "automacao": 1,
+        "nuvem": 1,
+        "mobile": 0,
+        "testes_qualidade": 2,
+        "gestao_produto": 1,
+        "comunicacao": 2,
+        "bancos_dados": 3
+      },
+      "competencias_junior": [
+        {
+          "id": "ciencia_habilidade_1",
+          "nome": "Python para análise",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "ciencia_habilidade_2",
+          "nome": "Estatística básica",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "ciencia_habilidade_3",
+          "nome": "Modelos preditivos iniciais",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Prever demanda de produtos com um modelo estatístico."
+    },
+    "engenharia": {
+      "nome": "Engenharia de Dados",
+      "resumo": "Pipelines, integração, transformação, qualidade e disponibilização de dados.",
+      "exemplo": "Montar um pipeline ETL que centraliza dados de vendas.",
+      "aprender": [
+        "SQL",
+        "Python",
+        "ETL/ELT",
+        "Modelagem de dados"
+      ],
+      "pesos": {
+        "logica": 4,
+        "matematica_estatistica": 2,
+        "design_ux": 0,
+        "modelagem_preditiva": 2,
+        "pipelines_dados": 5,
+        "seguranca": 1,
+        "automacao": 4,
+        "nuvem": 3,
+        "mobile": 0,
+        "testes_qualidade": 3,
+        "gestao_produto": 1,
+        "comunicacao": 2,
+        "bancos_dados": 5
+      },
+      "competencias_junior": [
+        {
+          "id": "engenharia_habilidade_1",
+          "nome": "SQL",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "engenharia_habilidade_2",
+          "nome": "Integração ETL/ELT",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "engenharia_habilidade_3",
+          "nome": "Pipelines de dados",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Montar um pipeline ETL que centraliza dados de vendas."
+    },
+    "seguranca": {
+      "nome": "Cibersegurança (Security / Pentesting)",
+      "resumo": "Proteção, identificação de vulnerabilidades e defesa de sistemas e redes.",
+      "exemplo": "Investigar falhas e propor melhorias de segurança em uma aplicação.",
+      "aprender": [
+        "Redes",
+        "Linux",
+        "Segurança web",
+        "Análise de vulnerabilidades"
+      ],
+      "pesos": {
+        "logica": 3,
+        "matematica_estatistica": 2,
+        "design_ux": 0,
+        "modelagem_preditiva": 0,
+        "pipelines_dados": 1,
+        "seguranca": 5,
+        "automacao": 3,
+        "nuvem": 2,
+        "mobile": 0,
+        "testes_qualidade": 4,
+        "gestao_produto": 1,
+        "comunicacao": 2,
+        "bancos_dados": 2
+      },
+      "competencias_junior": [
+        {
+          "id": "seguranca_habilidade_1",
+          "nome": "Redes de computadores",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "seguranca_habilidade_2",
+          "nome": "Fundamentos de Linux",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "seguranca_habilidade_3",
+          "nome": "Segurança web",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Investigar falhas e propor melhorias de segurança em uma aplicação."
+    },
+    "devops": {
+      "nome": "DevOps & SRE",
+      "resumo": "Automação de builds, testes, deploys, monitoramento e confiabilidade operacional.",
+      "exemplo": "Criar um pipeline de CI/CD com monitoramento.",
+      "aprender": [
+        "Linux",
+        "GitHub Actions",
+        "Docker",
+        "Observabilidade"
+      ],
+      "pesos": {
+        "logica": 4,
+        "matematica_estatistica": 1,
+        "design_ux": 0,
+        "modelagem_preditiva": 0,
+        "pipelines_dados": 3,
+        "seguranca": 3,
+        "automacao": 5,
+        "nuvem": 4,
+        "mobile": 0,
+        "testes_qualidade": 4,
+        "gestao_produto": 1,
+        "comunicacao": 2,
+        "bancos_dados": 3
+      },
+      "competencias_junior": [
+        {
+          "id": "devops_habilidade_1",
+          "nome": "Linux e Git",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "devops_habilidade_2",
+          "nome": "Pipelines CI/CD",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "devops_habilidade_3",
+          "nome": "Contêineres com Docker",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Criar um pipeline de CI/CD com monitoramento."
+    },
+    "cloud": {
+      "nome": "Computação em Nuvem (Cloud Architecture)",
+      "resumo": "Desenho e administração de infraestruturas escaláveis em provedores de nuvem.",
+      "exemplo": "Planejar uma arquitetura escalável na AWS, Azure ou GCP.",
+      "aprender": [
+        "Redes",
+        "AWS/Azure/GCP",
+        "Infraestrutura como código",
+        "Arquitetura"
+      ],
+      "pesos": {
+        "logica": 3,
+        "matematica_estatistica": 1,
+        "design_ux": 0,
+        "modelagem_preditiva": 0,
+        "pipelines_dados": 2,
+        "seguranca": 3,
+        "automacao": 4,
+        "nuvem": 5,
+        "mobile": 0,
+        "testes_qualidade": 2,
+        "gestao_produto": 2,
+        "comunicacao": 2,
+        "bancos_dados": 3
+      },
+      "competencias_junior": [
+        {
+          "id": "cloud_habilidade_1",
+          "nome": "Redes e Linux",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "cloud_habilidade_2",
+          "nome": "Serviços de nuvem",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "cloud_habilidade_3",
+          "nome": "Infraestrutura como código",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Planejar uma arquitetura escalável na AWS, Azure ou GCP."
+    },
+    "mobile": {
+      "nome": "Desenvolvimento Mobile",
+      "resumo": "Desenvolvimento de aplicativos para Android e iOS, nativos ou multiplataforma.",
+      "exemplo": "Construir um aplicativo com login e notificações.",
+      "aprender": [
+        "Flutter ou React Native",
+        "Kotlin/Swift",
+        "APIs",
+        "Publicação de apps"
+      ],
+      "pesos": {
+        "logica": 4,
+        "matematica_estatistica": 0,
+        "design_ux": 4,
+        "modelagem_preditiva": 0,
+        "pipelines_dados": 0,
+        "seguranca": 1,
+        "automacao": 2,
+        "nuvem": 1,
+        "mobile": 5,
+        "testes_qualidade": 4,
+        "gestao_produto": 1,
+        "comunicacao": 3,
+        "bancos_dados": 2
+      },
+      "competencias_junior": [
+        {
+          "id": "mobile_habilidade_1",
+          "nome": "Fundamentos Flutter/React Native ou nativo",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "mobile_habilidade_2",
+          "nome": "Integração com APIs",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "mobile_habilidade_3",
+          "nome": "Testes de aplicativos",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Construir um aplicativo com login e notificações."
+    },
+    "qa": {
+      "nome": "Engenharia de Qualidade e Testes (QA)",
+      "resumo": "Estratégia de testes, automação, prevenção de falhas e qualidade do software.",
+      "exemplo": "Criar testes automatizados para compras e pagamentos.",
+      "aprender": [
+        "Testes funcionais",
+        "Pytest",
+        "Selenium/Playwright",
+        "Integração contínua"
+      ],
+      "pesos": {
+        "logica": 4,
+        "matematica_estatistica": 2,
+        "design_ux": 2,
+        "modelagem_preditiva": 1,
+        "pipelines_dados": 1,
+        "seguranca": 2,
+        "automacao": 4,
+        "nuvem": 1,
+        "mobile": 2,
+        "testes_qualidade": 5,
+        "gestao_produto": 2,
+        "comunicacao": 3,
+        "bancos_dados": 2
+      },
+      "competencias_junior": [
+        {
+          "id": "qa_habilidade_1",
+          "nome": "Testes funcionais",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "qa_habilidade_2",
+          "nome": "Testes automatizados",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "qa_habilidade_3",
+          "nome": "Registro e análise de defeitos",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Criar testes automatizados para compras e pagamentos."
+    },
+    "produto": {
+      "nome": "Gestão de Produtos (Product Management)",
+      "resumo": "Definição de prioridades e conexão entre necessidades de usuários, negócio e tecnologia.",
+      "exemplo": "Priorizar funcionalidades do roadmap de um aplicativo.",
+      "aprender": [
+        "Discovery",
+        "Priorização",
+        "Métricas de produto",
+        "Comunicação"
+      ],
+      "pesos": {
+        "logica": 2,
+        "matematica_estatistica": 1,
+        "design_ux": 3,
+        "modelagem_preditiva": 1,
+        "pipelines_dados": 1,
+        "seguranca": 1,
+        "automacao": 1,
+        "nuvem": 1,
+        "mobile": 1,
+        "testes_qualidade": 2,
+        "gestao_produto": 5,
+        "comunicacao": 5,
+        "bancos_dados": 1
+      },
+      "competencias_junior": [
+        {
+          "id": "produto_habilidade_1",
+          "nome": "Definição de requisitos",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "produto_habilidade_2",
+          "nome": "Priorização de backlog",
+          "nivel_requerido": 3
+        },
+        {
+          "id": "produto_habilidade_3",
+          "nome": "Métricas de produto",
+          "nivel_requerido": 3
+        }
+      ],
+      "projeto_portfolio": "Priorizar funcionalidades do roadmap de um aplicativo."
+    }
+  }
+}
