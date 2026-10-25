@@ -67,11 +67,12 @@
     }
   },
   "parametros_inferencia": {
-    "metodo": "media_ponderada_normalizada",
-    "formula_planejada": "100 * soma(peso * (resposta - 1) / 4) / soma(pesos)",
+    "metodo": "media_ponderada_normalizada_com_ajustes",
+    "formula": "percentual = limitar(0, 100, soma[100*peso*(resposta-1)/(4*soma_pesos)] + bonus - penalidades)",
     "limiar_baixa_afinidade": 2,
-    "penalidade_logica_planejada": 8,
-    "observacao": "Formula e penalidades serao implementadas no proximo commit, nao nesta etapa de modelagem."
+    "peso_criterio_essencial": 4,
+    "penalidade_por_criterio_essencial": 6,
+    "observacao": "Pesos e penalidades sao criterios didaticos e editaveis. Os percentuais nao representam probabilidade de sucesso e nao precisam somar 100."
   },
   "trilhas": {
     "backend": {
@@ -514,5 +515,106 @@
       ],
       "projeto_portfolio": "Priorizar funcionalidades do roadmap de um aplicativo."
     }
-  }
+  },
+  "regras_ajuste": [
+    {
+      "id": "A01",
+      "trilha": "ciencia",
+      "condicoes": {
+        "modelagem_preditiva": {
+          "min": 4
+        },
+        "matematica_estatistica": {
+          "min": 4
+        },
+        "pipelines_dados": {
+          "max": 2
+        }
+      },
+      "pontos": 5,
+      "motivo": "Predição e estatística altas, com pouco interesse em pipelines, reforçam Ciência de Dados."
+    },
+    {
+      "id": "A02",
+      "trilha": "engenharia",
+      "condicoes": {
+        "pipelines_dados": {
+          "min": 4
+        },
+        "bancos_dados": {
+          "min": 4
+        },
+        "modelagem_preditiva": {
+          "max": 2
+        }
+      },
+      "pontos": 5,
+      "motivo": "Pipelines e bancos de dados predominam sobre modelagem preditiva."
+    },
+    {
+      "id": "A03",
+      "trilha": "devops",
+      "condicoes": {
+        "automacao": {
+          "min": 4
+        },
+        "testes_qualidade": {
+          "min": 4
+        },
+        "nuvem": {
+          "min": 3
+        }
+      },
+      "pontos": 4,
+      "motivo": "Automação, qualidade e operação de serviços reforçam DevOps/SRE."
+    },
+    {
+      "id": "A04",
+      "trilha": "cloud",
+      "condicoes": {
+        "nuvem": {
+          "min": 4
+        },
+        "automacao": {
+          "max": 2
+        }
+      },
+      "pontos": 5,
+      "motivo": "Arquitetura em nuvem é prioridade, mais que automação de entregas."
+    },
+    {
+      "id": "A05",
+      "trilha": "frontend",
+      "condicoes": {
+        "design_ux": {
+          "min": 4
+        },
+        "comunicacao": {
+          "min": 3
+        },
+        "mobile": {
+          "max": 2
+        }
+      },
+      "pontos": 4,
+      "motivo": "Design e experiência web se destacam sobre interesse em mobile."
+    },
+    {
+      "id": "A06",
+      "trilha": "produto",
+      "condicoes": {
+        "gestao_produto": {
+          "min": 4
+        },
+        "comunicacao": {
+          "min": 4
+        },
+        "logica": {
+          "max": 2
+        }
+      },
+      "pontos": 4,
+      "motivo": "Gestão e comunicação predominam sobre programação diária."
+    }
+  ]
 }
