@@ -1,175 +1,296 @@
-"""Interface Streamlit do Consultor Inteligente de Carreiras em TI."""
+"""Interface da Etapa 2 — entrevista em 3 etapas e inferência ponderada.
+
+Executar: python -m streamlit run app.py
+Os arquivos motor.py e os testes da Etapa 1 permanecem preservados.
+"""
 from __future__ import annotations
 
-import csv
-import io
 import json
-from dataclasses import asdict
 from pathlib import Path
 
 import streamlit as st
 
-from conhecimento import OPCOES, ROTULOS, TRILHAS
-from motor import avaliar
+from base_conhecimento import carregar_base
+from entrevista_etapa2 import (
+    CONHECIMENTOS, ETAPAS, EXPERIENCIAS, IMPACTOS, OBJETIVOS,
+    afinidades_iniciais, montar_relatorio, validar_afinidades, validar_contexto,
+)
+from motor_ponderado import avaliar_ponderado
 
 BASE = Path(__file__).resolve().parent
 st.set_page_config(
-    page_title="Consultor Inteligente de Carreiras em TI",
+    page_title="Consultor Avançado de Carreiras em TI",
     page_icon="🧭",
     layout="wide",
-    initial_sidebar_state="expanded",
 )
 
-st.markdown(
-    """
-    <style>
-    .block-container {max-width: 1120px; padding-top: 2.2rem;}
-    h1, h2, h3 {letter-spacing: -0.03em;}
-    [data-testid="stMetricValue"] {font-size: 2.0rem;}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown("""
+<style>
+.block-container {max-width: 1150px; padding-top: 1.7rem;}
+h1, h2, h3 {letter-spacing: -0.025em;}
+</style>
+""", unsafe_allow_html=True)
 
 
-@st.cache_data
-def ler_matriz():
-    with (BASE / "docs" / "matriz_decisao.csv").open("r", encoding="utf-8-sig", newline="") as arq:
-        return list(csv.DictReader(arq, delimiter=";"))
+@st.cache_data(show_spinner=False)
+def base_de_conhecimento():
+    return carregar_base()
 
 
-def perguntar(campo: str, titulo: str, ajuda: str) -> str | None:
-    opcoes = [codigo for codigo, _ in OPCOES[campo]]
-    return st.selectbox(
-        titulo,
-        options=opcoes,
-        index=None,
-        placeholder="Selecione uma opção...",
-        format_func=lambda codigo: ROTULOS[campo][codigo],
-        help=ajuda,
-        key=f"pergunta_{campo}",
+try:
+    base = base_de_conhecimento()
+except (OSError, ValueError, json.JSONDecodeError) as erro:
+    st.error(f"Não foi possível ler a base externa de carreiras: {erro}")
+    st.stop()
+
+# Armazenamento explícito evita perda de respostas ao mudar de etapa.
+if "etapa2_passo" not in st.session_state:
+    st.session_state["etapa2_passo"] = 0
+if "etapa2_perfil" not in st.session_state:
+    st.session_state["etapa2_perfil"] = {
+        "experiencia": EXPERIENCIAS[0], "conhecimentos": [],
+    }
+if "etapa2_afinidades" not in st.session_state:
+    st.session_state["etapa2_afinidades"] = afinidades_iniciais(base)
+if "etapa2_objetivos" not in st.session_state:
+    st.session_state["etapa2_objetivos"] = {
+        "objetivo": OBJETIVOS[0], "impacto": IMPACTOS[-1], "horas_semanais": 6,
+    }
+
+
+def ir_para(passo: int) -> None:
+    st.session_state["etapa2_passo"] = passo
+    st.rerun()
+
+
+def indice_atual(lista: tuple[str, ...], escolhido: str) -> int:
+    return lista.index(escolhido) if escolhido in lista else 0
+
+
+def mostrar_perfil() -> None:
+    st.subheader("1. Perfil pessoal")
+    st.write("Queremos conhecer seu ponto de partida. Não é necessário informar nome ou e-mail.")
+    previo = st.session_state["etapa2_perfil"]
+    with st.form("form_etapa2_perfil"):
+        experiencia = st.selectbox(
+            "Qual sua experiência atual com programação e tecnologia?",
+            options=EXPERIENCIAS,
+            index=indice_atual(EXPERIENCIAS, previo["experiencia"]),
+        )
+        conhecimentos = st.multiselect(
+            "Com quais tecnologias você já teve algum contato? (opcional)",
+            options=CONHECIMENTOS,
+            default=previo["conhecimentos"],
+        )
+        avancar = st.form_submit_button("Próximo: afinidades técnicas", type="primary")
+    if avancar:
+        st.session_state["etapa2_perfil"] = {
+            "experiencia": experiencia, "conhecimentos": conhecimentos,
+        }
+        ir_para(1)
+
+
+def mostrar_afinidades() -> None:
+    st.subheader("2. Afinidades técnicas")
+    st.write("Marque de 1 a 5 o quanto cada atividade desperta seu interesse.")
+    escala = base["escala_afinidade"]
+    minimo, maximo = escala["minimo"], escala["maximo"]
+    st.caption("1 = nenhuma afinidade · 3 = afinidade moderada · 5 = muita afinidade")
+    salvas = st.session_state["etapa2_afinidades"]
+    notas: dict[str, int] = {}
+    with st.form("form_etapa2_afinidades"):
+        esquerda, direita = st.columns(2, gap="large")
+        for indice, (codigo, info) in enumerate(base["dimensoes"].items()):
+            coluna = esquerda if indice % 2 == 0 else direita
+            with coluna:
+                notas[codigo] = st.slider(
+                    info["pergunta"], min_value=minimo, max_value=maximo,
+                    value=salvas.get(codigo, 3), step=1, key=f"etapa2_slider_{codigo}",
+                )
+        voltar = st.form_submit_button("← Voltar ao perfil")
+        avancar = st.form_submit_button("Próximo: objetivos profissionais →", type="primary")
+    if voltar or avancar:
+        try:
+            st.session_state["etapa2_afinidades"] = validar_afinidades(notas, base)
+        except ValueError as erro:
+            st.error(str(erro))
+            return
+        ir_para(0 if voltar else 2)
+
+
+def mostrar_objetivos() -> None:
+    st.subheader("3. Objetivos de carreira")
+    st.write("Esta parte contextualiza o diagnóstico e servirá de base para o roadmap personalizado.")
+    previo = st.session_state["etapa2_objetivos"]
+    with st.form("form_etapa2_objetivos"):
+        objetivo = st.selectbox(
+            "Qual seu principal objetivo profissional?", options=OBJETIVOS,
+            index=indice_atual(OBJETIVOS, previo["objetivo"]),
+        )
+        impacto = st.selectbox(
+            "Qual tipo de contribuição mais desperta seu interesse?", options=IMPACTOS,
+            index=indice_atual(IMPACTOS, previo["impacto"]),
+        )
+        horas = st.slider(
+            "Quantas horas por semana você pretende dedicar aos estudos?",
+            min_value=1, max_value=40, value=previo["horas_semanais"], step=1,
+        )
+        st.caption(
+            "O ranking de hoje utiliza as 13 notas de afinidade. "
+            "Experiência e objetivos serão usados no módulo de roadmap da próxima etapa."
+        )
+        voltar = st.form_submit_button("← Voltar às afinidades")
+        diagnosticar = st.form_submit_button("🔎 Calcular minha compatibilidade", type="primary")
+    if voltar or diagnosticar:
+        novos_objetivos = {
+            "objetivo": objetivo, "impacto": impacto, "horas_semanais": horas,
+        }
+        try:
+            validar_contexto(st.session_state["etapa2_perfil"], novos_objetivos)
+        except ValueError as erro:
+            st.error(str(erro))
+            return
+        st.session_state["etapa2_objetivos"] = novos_objetivos
+        if voltar:
+            ir_para(1)
+        else:
+            try:
+                notas = validar_afinidades(st.session_state["etapa2_afinidades"], base)
+                st.session_state["etapa2_resultado"] = avaliar_ponderado(notas, base)
+            except ValueError as erro:
+                st.error(f"Não foi possível calcular o diagnóstico: {erro}")
+                return
+            ir_para(3)
+
+
+def mostrar_resultado() -> None:
+    resultado = st.session_state.get("etapa2_resultado")
+    if resultado is None:
+        ir_para(0)
+        return
+
+    st.subheader("Seu diagnóstico de compatibilidade")
+    primeiro = resultado.top3[0]
+    st.success(f"Carreira mais compatível com suas respostas: **{primeiro.nome}**")
+    colunas = st.columns(3)
+    for posicao, (coluna, trilha) in enumerate(zip(colunas, resultado.top3), start=1):
+        coluna.metric(f"{posicao}º lugar — {trilha.nome}", f"{trilha.percentual:.2f}%")
+    st.caption(
+        "Os percentuais são índices heurísticos de aderência, NÃO probabilidades "
+        "de conseguir emprego. Os valores não precisam somar 100%."
     )
 
+    st.markdown("#### Comparação de todas as carreiras")
+    tabela = [
+        {"Carreira": item.nome, "Compatibilidade (%)": item.percentual}
+        for item in resultado.ranking
+    ]
+    st.bar_chart(tabela, x="Carreira", y="Compatibilidade (%)")
+    st.dataframe(tabela, hide_index=True)
 
-def renderizar_resultado(respostas: dict[str, str]):
-    resultado = avaliar(respostas)
-    trilha = TRILHAS[resultado.recomendacao]
-
-    st.divider()
-    st.subheader("Seu diagnóstico")
-    st.success(f"Trilha recomendada: **{trilha['nome']}**")
-    a, b, c = st.columns(3)
-    a.metric("Pontuação obtida", f"{resultado.ranking[0][1]} pontos")
-    b.metric("Regras disparadas", len(resultado.evidencias[resultado.recomendacao]))
-    c.metric("Trilhas analisadas", len(resultado.ranking))
-    st.write(trilha["resumo"])
-    st.info(f"**Exemplo de projeto:** {trilha['exemplo']}")
-
-    st.markdown("#### Por que o sistema escolheu essa trilha?")
-    for regra in resultado.evidencias[resultado.recomendacao]:
-        st.markdown(f"- **{regra.codigo} (+{regra.pontos} pontos):** {regra.motivo}")
+    st.markdown("#### Por que esta carreira ficou em primeiro?")
+    st.write(base["trilhas"][primeiro.identificador]["resumo"])
+    positivas = [e for e in primeiro.evidencias if e.impacto > 0]
+    negativas = [e for e in primeiro.evidencias if e.impacto < 0]
+    for evidencia in positivas[:6]:
+        st.write(f"**{evidencia.codigo} (+{evidencia.impacto:.2f})** — {evidencia.motivo}")
+    if negativas:
+        st.markdown("**Fatores que reduziram a compatibilidade:**")
+        for evidencia in negativas[:4]:
+            st.write(f"**{evidencia.codigo} ({evidencia.impacto:.2f})** — {evidencia.motivo}")
     st.caption(resultado.criterio_desempate)
 
-    st.markdown("#### O que estudar primeiro")
-    st.write(" · ".join(trilha["aprender"]))
+    with st.expander("Ver a composição da pontuação das três trilhas"):
+        for item in resultado.top3:
+            st.write(
+                f"**{item.nome}: {item.percentual:.2f}%** — "
+                f"base {item.base_percentual:.2f}, bônus +{item.bonus:.2f}, "
+                f"penalidade −{item.penalidade:.2f}"
+            )
+            for evidencia in item.evidencias[:8]:
+                st.write(f"{evidencia.codigo}: {evidencia.motivo}")
 
-    st.markdown("#### Comparação entre as dez trilhas")
-    linhas = [
-        {
-            "Posição": i,
-            "Carreira": TRILHAS[trilha_id]["nome"],
-            "Pontos": pontos,
-            "Regras ativadas": len(resultado.evidencias[trilha_id]),
-        }
-        for i, (trilha_id, pontos) in enumerate(resultado.ranking, start=1)
-    ]
-    st.dataframe(linhas, use_container_width=True, hide_index=True)
-    if resultado.ranking[1][1] > 0:
-        alternativa = TRILHAS[resultado.ranking[1][0]]["nome"]
-        st.caption(f"Outra opção a explorar: {alternativa}.")
-
-    with st.expander("Ver todos os motivos e pontos das outras trilhas"):
-        for trilha_id, pontos in resultado.ranking:
-            st.markdown(f"**{TRILHAS[trilha_id]['nome']} — {pontos} pontos**")
-            if not resultado.evidencias[trilha_id]:
-                st.write("Nenhuma regra foi acionada para essa trilha.")
-            for regra in resultado.evidencias[trilha_id]:
-                st.write(f"{regra.codigo}: +{regra.pontos} — {regra.motivo}")
-
-    relatorio = {
-        "respostas": {campo: ROTULOS[campo][codigo] for campo, codigo in respostas.items()},
-        "recomendacao": trilha["nome"],
-        "pontuacao": resultado.ranking[0][1],
-        "justificativas": [asdict(regra) for regra in resultado.evidencias[resultado.recomendacao]],
-        "ranking": linhas,
-        "criterio_desempate": resultado.criterio_desempate,
-    }
-    st.download_button(
-        "📥 Baixar meu diagnóstico em JSON",
-        data=json.dumps(relatorio, indent=2, ensure_ascii=False),
-        file_name="diagnostico_carreira_ti.json",
-        mime="application/json",
+    relatorio = montar_relatorio(
+        base, st.session_state["etapa2_perfil"],
+        st.session_state["etapa2_afinidades"],
+        st.session_state["etapa2_objetivos"], resultado,
     )
-    st.caption("Pontuação é baseada em regras, não representa porcentagem de aptidão nem probabilidade de sucesso.")
+    st.download_button(
+        "📥 Baixar diagnóstico em JSON",
+        data=json.dumps(relatorio, ensure_ascii=False, indent=2),
+        file_name="diagnostico_etapa2.json", mime="application/json",
+    )
+
+    a, b, c = st.columns(3)
+    if a.button("Editar meu perfil"):
+        ir_para(0)
+    if b.button("Editar afinidades"):
+        ir_para(1)
+    if c.button("Editar objetivos"):
+        ir_para(2)
 
 
 with st.sidebar:
-    st.subheader("🧭 Guia rápido")
-    st.write("Responda às cinco perguntas; o motor de regras analisará dez carreiras possíveis.")
-    st.write("**Tecnologias:** Python + Experta + Streamlit")
-    st.write("**Base de conhecimento:** 46 regras SE–ENTÃO")
-    st.info("O diagnóstico é uma orientação exploratória, não uma decisão definitiva sobre sua carreira.")
-    st.caption("Projeto acadêmico • UNIPAC Barbacena")
+    st.header("🧭 Consultor de Carreiras")
+    st.write("**Etapa 2:** diagnóstico por pesos e tratamento de incerteza.")
+    st.write("**10 carreiras · 13 afinidades · Top 3**")
+    st.caption("Python + Streamlit · base de conhecimento JSON externa")
+    st.info("Ferramenta acadêmica e exploratória; não substitui orientação profissional.")
+    st.caption("UNIPAC Barbacena — Inteligência Artificial")
 
-st.title("🧭 Consultor Inteligente de Carreiras em TI")
-st.write("Descubra uma trilha para começar a explorar com um sistema especialista explicável.")
+st.title("🧭 Consultor Avançado de Carreiras em TI")
+st.write("Descubra carreiras compatíveis com seus interesses por meio de regras e pontuação ponderada.")
 
-tab_entrevista, tab_trilhas, tab_regras = st.tabs(["🎯 Fazer entrevista", "🧑‍💻 Conhecer as carreiras", "🧠 Como o sistema decide"])
+aba_entrevista, aba_carreiras, aba_metodo = st.tabs(
+    ["🎯 Entrevista", "💻 Dez carreiras", "🧠 Como funciona"]
+)
 
-with tab_entrevista:
-    st.subheader("Conte um pouco sobre seus interesses")
-    st.caption("Selecione uma resposta em cada campo. Não há respostas certas ou erradas.")
-    with st.form("formulario_carreira"):
-        esquerda, direita = st.columns(2, gap="large")
-        with esquerda:
-            matematica = perguntar("matematica", "1. Qual é sua afinidade com matemática e estatística?", "Considere gosto ou interesse, não apenas notas escolares.")
-            atividade = perguntar("atividade", "2. O que você gostaria de fazer no dia a dia?", "Escolha a atividade que mais chama sua atenção.")
-            ferramenta = perguntar("ferramenta", "3. Qual linguagem ou ferramenta mais combina com você?", "Pode selecionar 'Nenhuma' caso esteja começando.")
-        with direita:
-            entrega = perguntar("entrega", "4. Que resultado você gostaria de entregar?", "Pense no impacto principal do seu trabalho.")
-            estilo = perguntar("estilo", "5. Qual modo de trabalhar você prefere?", "Escolha o tipo de atividade com que gostaria de passar mais tempo.")
-        enviado = st.form_submit_button("🔎 Analisar meu perfil", type="primary", use_container_width=True)
+with aba_entrevista:
+    passo = st.session_state["etapa2_passo"]
+    if passo < len(ETAPAS):
+        st.progress((passo + 1) / len(ETAPAS))
+        st.caption(f"Etapa {passo + 1} de {len(ETAPAS)}: {ETAPAS[passo]}")
+    else:
+        st.progress(1.0)
+        st.caption("Entrevista concluída — resultados")
 
-    if enviado:
-        respostas = dict(matematica=matematica, atividade=atividade, ferramenta=ferramenta, entrega=entrega, estilo=estilo)
-        if any(resposta is None for resposta in respostas.values()):
-            st.warning("Preencha as cinco respostas para gerar seu diagnóstico.")
-            st.session_state.pop("diagnostico", None)
-        else:
-            st.session_state["diagnostico"] = respostas
+    if passo == 0:
+        mostrar_perfil()
+    elif passo == 1:
+        mostrar_afinidades()
+    elif passo == 2:
+        mostrar_objetivos()
+    else:
+        mostrar_resultado()
 
-    if "diagnostico" in st.session_state:
-        renderizar_resultado(st.session_state["diagnostico"])
-
-with tab_trilhas:
-    st.subheader("As dez possibilidades de carreira")
-    for codigo, dados in TRILHAS.items():
+with aba_carreiras:
+    st.subheader("As dez trilhas de tecnologia")
+    for codigo, dados in base["trilhas"].items():
         with st.expander(dados["nome"]):
             st.write(dados["resumo"])
-            st.write(f"**Exemplo prático:** {dados['exemplo']}")
-            st.write("**Primeiros estudos:** " + ", ".join(dados["aprender"]))
+            st.write(f"**Exemplo de projeto:** {dados['exemplo']}")
+            st.write("**Tecnologias iniciais:** " + ", ".join(dados["aprender"]))
 
-with tab_regras:
-    st.subheader("Motor de inferência transparente")
+with aba_metodo:
+    st.subheader("Como o motor calcula a compatibilidade")
     st.write(
-        "A biblioteca **Experta** compara suas respostas a regras do tipo SE–ENTÃO. "
-        "Cada regra satisfeita soma pontos a uma trilha e registra uma justificativa. "
-        "Ganha a trilha com maior pontuação; empates seguem critérios fixos e públicos."
+        "As 13 notas variam de 1 a 5. Cada nota é normalizada e multiplicada "
+        "pelo peso da carreira descrito em `regras_carreiras.json`. O motor soma "
+        "as contribuições, aplica regras extras de bônus ou penalidade e limita "
+        "o resultado ao intervalo de 0% a 100%."
     )
-    st.markdown("**Pesos principais:** atividade (+3), atividade + entrega (+8), atividade + ferramenta (+4), entrega + estilo (+5).")
-    st.write("Seis regras complementares reforçam distinções entre áreas próximas.")
-    matriz = ler_matriz()
-    st.dataframe(matriz, hide_index=True, use_container_width=True)
-    with (BASE / "docs" / "matriz_decisao.csv").open("rb") as arq:
-        st.download_button("📥 Baixar matriz de decisão CSV", data=arq.read(), file_name="matriz_decisao.csv", mime="text/csv")
-    st.caption("A lógica não usa dados pessoais externos, aprendizado de máquina ou serviços pagos.")
+    st.write(
+        "Empates são resolvidos por menor penalidade e, persistindo, "
+        "pela ordem fixa das carreiras no JSON. O código da Etapa 1, incluindo "
+        "as regras Experta, permanece no repositório."
+    )
+    st.info(
+        "**Próximos módulos:** identificação das lacunas para nível Júnior "
+        "e geração de um roadmap de estudos individualizado."
+    )
+    with st.expander("Mostrar as 13 dimensões avaliadas"):
+        st.dataframe(
+            [{"Dimensão": d["titulo"], "Pergunta": d["pergunta"]}
+             for d in base["dimensoes"].values()],
+            hide_index=True,
+        )
