@@ -1,27 +1,50 @@
-# Consultor Avançado de Carreiras em TI
+# Consultor Inteligente de Carreiras em TI 🧭
 
-**UNIPAC Barbacena — Ciência da Computação — Inteligência Artificial**
+*Um sistema especialista para quem deseja escolher uma direção sem precisar consultar uma bola de cristal.*
 
-Sistema especialista em Python com interface Streamlit para mapear afinidades e apresentar as carreiras de tecnologia mais compatíveis com o perfil de cada usuário. Este repositório reúne a **Etapa 1** (motor com 46 regras Experta) e sua evolução progressiva para a **Etapa 2** (inferência ponderada e tratamento de incerteza).
+**Centro Universitário Presidente Antônio Carlos — UNIPAC Barbacena**  
+**Curso:** Ciência da Computação · **Disciplina:** Inteligência Artificial
 
-> **Importante:** os percentuais são indicadores heurísticos de afinidade, **não** probabilidades de emprego, sucesso ou aptidão profissional. Os percentuais das carreiras não precisam somar 100%.
+O universo da tecnologia tem uma virtude e um pequeno defeito: oferece caminhos em abundância. Entre algoritmos, interfaces, servidores e dados, não é raro que alguém descubra dez áreas interessantes e, ao final, continue sem saber por qual começar.
 
-## Funcionalidades disponíveis nesta versão (Dia 3 — 25/10/2026)
+Este projeto nasceu para tornar essa escolha um pouco menos nebulosa. Por meio de uma entrevista e de um motor de inferência baseado em regras, o sistema compara as afinidades do usuário com **dez trilhas de carreira em TI**, organiza os resultados e explica os motivos da recomendação. Não pretende decidir o futuro de ninguém — até porque seria uma responsabilidade excessiva para um programa em Python.
 
-- **10 trilhas de carreira**: Back-end, Front-end/UX, Ciência de Dados, Engenharia de Dados, Cibersegurança, DevOps/SRE, Cloud, Mobile, QA e Gestão de Produtos.
-- Entrevista dividida em **três etapas**: perfil pessoal, 13 afinidades técnicas (de **1 a 5**) e objetivos profissionais.
-- Motor independente em `motor_ponderado.py`, que lê a base externa `regras_carreiras.json`, calcula pesos, bônus e penalidades e ordena as **três carreiras com maior aderência**.
-- Gráfico comparativo de dez carreiras, motivos da recomendação e relatório exportável em JSON.
-- Navegação com possibilidade de voltar às etapas anteriores e ajustar as respostas.
-- Código anterior da Etapa 1 preservado em `motor.py` e `conhecimento.py`, com 46 regras `@Rule` da Experta e testes anteriores.
+## O que o consultor sabe fazer
 
-**Em desenvolvimento nos próximos commits:** análise de lacunas para nível Júnior, roadmap de estudos/certificações/portfólio e testes finais da experiência.
+Na versão atual, o sistema:
 
-## Instalação e execução no Windows
+- Conduz uma entrevista em **três etapas**: perfil pessoal, afinidades técnicas e objetivos de carreira.
+- Avalia **13 afinidades** em uma escala de **1 a 5**, sem exigir do usuário uma resposta absoluta para tudo.
+- Consulta uma base de conhecimento externa, `regras_carreiras.json`, com critérios, pesos e regras de ajuste.
+- Calcula compatibilidades por **pontuação ponderada**, com bônus e penalidades para situações específicas.
+- Apresenta um **Top 3 de carreiras**, além do ranking completo das dez opções.
+- Exibe gráficos e justificativas para que o resultado não pareça um palpite revestido de porcentagens.
+- Permite revisar respostas e baixar o diagnóstico em **JSON**.
 
-Recomendado: **Python 3.11** (devido às dependências antigas da Experta). O Streamlit e o motor ponderado podem funcionar em outras versões, mas a compatibilidade deve ser testada no computador de execução.
+O motor original da primeira etapa, com **46 regras `@Rule` da biblioteca Experta**, permanece no repositório para consulta e comparação.
 
-Abra a pasta do projeto no VS Code. No terminal PowerShell:
+> **Uma ressalva necessária:** os percentuais representam índices *heurísticos de afinidade*. Não são probabilidades de emprego, talento ou sucesso, e **não precisam somar 100%**. Uma carreira promissora ainda exige estudo — infelizmente, essa etapa não pôde ser automatizada.
+
+## As dez trilhas do mapa
+
+| Trilha | Território principal |
+|---|---|
+| **Desenvolvimento Back-end** | Lógica de servidores, APIs e bancos de dados |
+| **Desenvolvimento Front-end & UI/UX** | Interfaces, interação e experiência do usuário |
+| **Ciência de Dados e Machine Learning** | Estatística, modelos e previsões |
+| **Engenharia de Dados** | Pipelines, integração e infraestrutura de dados |
+| **Cibersegurança** | Proteção de sistemas e análise de vulnerabilidades |
+| **DevOps & SRE** | Automação, entrega contínua e confiabilidade |
+| **Computação em Nuvem** | Arquitetura e serviços escaláveis |
+| **Desenvolvimento Mobile** | Aplicativos para dispositivos móveis |
+| **Engenharia de Qualidade e Testes (QA)** | Testes, prevenção de falhas e qualidade |
+| **Gestão de Produtos** | Negócio, prioridades e evolução de produtos |
+
+## Colocando a bússola para funcionar
+
+**Requisitos:** Python instalado (preferencialmente **3.11**, em razão das dependências antigas da Experta) e acesso à internet para instalar as bibliotecas. **Não é necessário XAMPP**: o próprio Streamlit inicia o servidor local.
+
+No VS Code, abra a pasta do projeto, acesse o terminal e execute:
 
 ```powershell
 python --version
@@ -29,75 +52,93 @@ python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-O terminal mostrará um endereço como `http://localhost:8501`. Abra-o no navegador e siga os três passos do questionário. Para encerrar, pressione **Ctrl + C** no terminal.
+Abra o endereço indicado pelo terminal, normalmente **http://localhost:8501**. Para encerrar a aplicação, pressione **Ctrl + C** no terminal.
 
-Também é possível iniciar com `INICIAR_WINDOWS.bat` **se o Python 3.11 estiver instalado** (ele prepara um ambiente virtual).
+No Windows, quem tiver Python 3.11 instalado também pode executar `INICIAR_WINDOWS.bat`, que prepara um ambiente virtual para o projeto.
 
-### Como testar o motor sem navegador
+### A entrevista, em três capítulos
+
+1. **Perfil pessoal:** informe sua experiência e as tecnologias com as quais já teve contato.
+2. **Afinidades técnicas:** dê notas de 1 a 5 às 13 atividades propostas; é possível voltar e alterar as respostas.
+3. **Objetivos de carreira:** indique seu propósito profissional, o tipo de contribuição que prefere e suas horas disponíveis para estudo.
+
+Ao concluir, o consultor apresenta o ranking, o gráfico comparativo e as regras que ajudam a explicar o resultado. O diagnóstico pode ser exportado em JSON.
+
+**Nota de transparência:** nesta versão, **as 13 afinidades determinam o ranking**. Experiência e objetivos são registrados no relatório, mas **ainda não alteram a pontuação**. Eles serão utilizados no módulo posterior de análise de competências e plano de estudos.
+
+## O que acontece nos bastidores?
+
+O funcionamento da **Etapa 2** segue uma sequência simples de explicar, embora mais cuidadosa de programar:
+
+1. O usuário atribui notas às afinidades técnicas.
+2. `base_conhecimento.py` lê e valida o arquivo `regras_carreiras.json`.
+3. `motor_ponderado.py` aplica os pesos de cada carreira, calcula a pontuação e considera bônus ou penalidades.
+4. O sistema ordena os resultados, resolve empates pelos critérios definidos e apresenta as três carreiras mais compatíveis.
+5. `app.py` exibe os resultados; `entrevista_etapa2.py` valida as respostas e organiza o relatório exportável.
+
+As regras ficam fora do código do motor, de modo que a base de conhecimento possa ser estudada e ajustada sem misturar conceitos de carreira à lógica da aplicação. **Há método por trás do resultado, não magia por trás da tela.**
+
+A **Etapa 1**, preservada em `motor.py`, utiliza fatos e regras da Experta. Ela permite observar a passagem de uma recomendação por regras tradicionais para uma abordagem com graus de afinidade e pontuação ponderada.
+
+## Organização do projeto
+
+```text
+consultor_carreiras_ti/
+├── app.py                       # Interface Streamlit em três etapas
+├── entrevista_etapa2.py         # Validação e relatório da entrevista
+├── motor_ponderado.py           # Pesos, bônus, penalidades e Top 3
+├── regras_carreiras.json        # Conhecimento externo das dez trilhas
+├── base_conhecimento.py         # Leitura e validação do JSON
+├── simular_perfil_ponderado.py  # Demonstração do novo motor
+├── motor.py                     # Motor original: 46 regras Experta
+├── conhecimento.py              # Dados de apoio da Etapa 1
+├── personas.json                # Perfis de validação originais
+├── validar_personas.py          # Testes das personas da Etapa 1
+├── docs/                        # Matriz e diário técnico das etapas
+├── tests/                       # Testes automatizados
+├── requirements.txt             # Bibliotecas necessárias
+├── INICIAR_WINDOWS.bat          # Inicialização assistida no Windows
+└── README.md                    # Este pequeno mapa
+```
+
+## Testes: porque confiar é bom, verificar é melhor
+
+Para executar a demonstração do motor ponderado e os testes automatizados:
 
 ```powershell
 python simular_perfil_ponderado.py
 python -m unittest discover -s tests -v
 ```
 
-O primeiro comando demonstra o **Top 3** com um perfil sintético de Ciência de Dados. O segundo verifica o motor antigo, o JSON, a inferência ponderada e as validações da nova entrevista. O teste estrutural da interface não substitui a verificação manual no navegador.
+Os testes cobrem carregamento da base, validação de entradas, regras ponderadas, diferenciação de carreiras, perfis ambíguos e componentes de validação da entrevista. A aplicação também deve ser conferida manualmente no navegador: avançar pelas três etapas, voltar, modificar respostas e verificar o diagnóstico.
 
-### Como fazer a entrevista no navegador
+Os documentos na pasta [`docs/`](docs/) registram as decisões e os testes realizados em cada incremento. O código, por sua vez, oferece ao leitor a oportunidade de não depender apenas da palavra do autor.
 
-1. **Perfil pessoal:** indique sua experiência e tecnologias conhecidas (opcionais).
-2. **Afinidades:** atribua de 1 a 5 para cada uma das 13 atividades e avance. Pode voltar e ajustar notas.
-3. **Objetivos:** informe seu objetivo, tipo de contribuição preferido e horas semanais disponíveis.
-4. **Resultado:** veja o Top 3, o gráfico de barras, as explicações e a opção de baixar um diagnóstico JSON.
+## Diário de desenvolvimento
 
-**Nota sobre a pontuação:** nesta versão, as 13 afinidades definem o ranking. A experiência e os objetivos integram o relatório, mas ainda não influenciam os cálculos; serão aproveitados no roadmap em desenvolvimento.
-
-## Estrutura principal
-
-```text
-consultor_carreiras_ti/
-├── app.py                       # Streamlit em três etapas; resultado do motor ponderado
-├── entrevista_etapa2.py         # Validação e relatório exportável
-├── motor_ponderado.py           # Cálculo Top 3 com pesos, bônus e penalidades
-├── regras_carreiras.json        # Base externa: dimensões, 10 trilhas, pesos e regras
-├── base_conhecimento.py         # Leitura e validação da base JSON
-├── simular_perfil_ponderado.py  # Demonstração sem navegador
-├── motor.py                     # Motor de 46 regras Experta da Etapa 1 (preservado)
-├── conhecimento.py              # Suporte compatível com a Etapa 1
-├── personas.json                # Perfis de validação da Etapa 1
-├── validar_personas.py          # Validação da Etapa 1
-├── docs/
-│   ├── matriz_decisao.csv       # Matriz original de regras
-│   ├── resumo_matriz.md
-│   ├── etapa2_dia1.md            # Modelagem JSON
-│   ├── etapa2_dia2.md            # Inferência ponderada
-│   └── etapa2_dia3.md            # Interface em três etapas
-├── tests/
-│   ├── test_motor.py
-│   ├── test_base_conhecimento.py
-│   ├── test_motor_ponderado.py
-│   └── test_entrevista_etapa2.py
-├── requirements.txt
-├── INICIAR_WINDOWS.bat
-└── README.md
-```
-
-## Evolução e versionamento
-
-| Dia | Alteração | Referência |
+| Data | Evolução | Registro |
 |---|---|---|
-| 22/10 | Versão original do Sistema Especialista | `motor.py`, `docs/matriz_decisao.csv` |
-| 24/10 | Base externa com pesos e dez carreiras | [`docs/etapa2_dia1.md`](docs/etapa2_dia1.md) |
-| 25/10 (Dia 2) | Motor ponderado, penalidades e Top 3 | [`docs/etapa2_dia2.md`](docs/etapa2_dia2.md) |
-| 25/10 (Dia 3) | Entrevista graduada e interface wizard | [`docs/etapa2_dia3.md`](docs/etapa2_dia3.md) |
+| **22/10/2026** | Sistema original com regras Experta e entrevista objetiva | `motor.py` e [`docs/resumo_matriz.md`](docs/resumo_matriz.md) |
+| **24/10/2026** | Separação do conhecimento em JSON | [`docs/etapa2_dia1.md`](docs/etapa2_dia1.md) |
+| **25/10/2026 — Dia 2** | Inferência ponderada, bônus, penalidades e Top 3 | [`docs/etapa2_dia2.md`](docs/etapa2_dia2.md) |
+| **25/10/2026 — Dia 3** | Entrevista em três etapas integrada ao Streamlit | [`docs/etapa2_dia3.md`](docs/etapa2_dia3.md) |
 
-O histórico do Git mostra quais arquivos mudaram em cada evolução. A documentação de cada dia descreve os testes e decisões técnicas. Não é necessário criar outro repositório para a Etapa 2.
+O histórico de commits registra a evolução do projeto. Cada mudança funcional deve ser testada antes de ser publicada — uma disciplina que se aprende melhor praticando do que prometendo.
 
-## Arquitetura e transparência
+## Próximos capítulos
 
-Na Etapa 2, os pesos das carreiras, perguntas e condições de ajuste são carregados de **`regras_carreiras.json`**, separados do código Python. O motor calcula a média ponderada das respostas normalizadas e aplica bônus/penalidades às carreiras; o resultado é ordenado por compatibilidade. Em empate, usa menor penalidade e ordem de definição no JSON.
+A Etapa 2 ainda prevê:
 
-O método é determinístico e usa conhecimento configurado manualmente, não aprendizado de máquina nem diagnóstico vocacional cientificamente validado. O repositório contém também a primeira implementação com Experta, útil para comparar abordagens.
+- **Análise de lacunas (*skill gaps*):** comparar os conhecimentos informados com competências esperadas de um profissional Júnior.
+- **Roadmap personalizado:** organizar estudos, tecnologias, certificações pertinentes e projetos para portfólio.
+- **Validação final:** ampliar os testes de robustez e revisar a experiência completa.
 
-## Autoria e uso acadêmico
+Essas funcionalidades **ainda não estão prontas nesta versão**. O README será atualizado conforme forem implementadas e testadas.
 
-Projeto acadêmico da UNIPAC Barbacena. A documentação e os arquivos de teste permitem reproduzir as funcionalidades e compreender as decisões do sistema. O sistema não exige cadastro, nome ou e-mail para avaliar um perfil; o arquivo de diagnóstico é gerado sob solicitação do usuário.
+## Considerações finais
+
+Este é um projeto **acadêmico e exploratório**, construído sobre regras definidas manualmente. Não utiliza aprendizado de máquina para descobrir aptidões, não substitui orientação profissional e não oferece qualquer garantia sobre o mercado de trabalho.
+
+Ferramentas de inteligência artificial foram utilizadas como apoio ao desenvolvimento, especialmente na elaboração da interface e na organização de textos. O funcionamento do sistema deve ser avaliado por suas regras, seus testes e pelos resultados que é capaz de reproduzir.
+
+Se o programa ajudar alguém a formular uma pergunta melhor sobre a própria carreira, já terá cumprido uma parte importante de sua missão. Às vezes, escolher um caminho começa simplesmente por compreender as opções.
