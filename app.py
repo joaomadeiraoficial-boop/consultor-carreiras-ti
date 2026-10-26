@@ -16,6 +16,7 @@ from entrevista_etapa2 import (
     afinidades_iniciais, montar_relatorio, validar_afinidades, validar_contexto,
 )
 from motor_ponderado import avaliar_ponderado
+from modulo_roadmap import carregar_roteiros, gerar_roadmap
 
 BASE = Path(__file__).resolve().parent
 st.set_page_config(
@@ -52,6 +53,8 @@ if "etapa2_perfil" not in st.session_state:
     }
 if "etapa2_afinidades" not in st.session_state:
     st.session_state["etapa2_afinidades"] = afinidades_iniciais(base)
+if "etapa2_autoavaliacoes" not in st.session_state:
+    st.session_state["etapa2_autoavaliacoes"] = {}
 if "etapa2_objetivos" not in st.session_state:
     st.session_state["etapa2_objetivos"] = {
         "objetivo": OBJETIVOS[0], "impacto": IMPACTOS[-1], "horas_semanais": 6,
@@ -210,10 +213,90 @@ def mostrar_resultado() -> None:
             for evidencia in item.evidencias[:8]:
                 st.write(f"{evidencia.codigo}: {evidencia.motivo}")
 
+    st.divider()
+    st.markdown("#### Seu próximo passo: competências para Júnior")
+    st.write(
+        "Gostar de uma área é diferente de conhecer suas ferramentas. "
+        "Avalie o que você **já consegue fazer**, de 0 (nunca estudei) a 5 "
+        "(consigo aplicar com autonomia). A referência acadêmica aqui é o nível 3."
+    )
+
+    chave_carreira = primeiro.identificador
+    competencias = base["trilhas"][chave_carreira]["competencias_junior"]
+    avaliacoes_salvas = st.session_state["etapa2_autoavaliacoes"].get(chave_carreira, {})
+    respostas_novas = {}
+    with st.form(f"form_lacunas_{chave_carreira}"):
+        for competencia in competencias:
+            codigo = competencia["id"]
+            respostas_novas[codigo] = st.slider(
+                f"{competencia['nome']} (meta de referência: {competencia['nivel_requerido']}/5)",
+                min_value=0, max_value=5,
+                value=avaliacoes_salvas.get(codigo, 0), step=1,
+                key=f"lacuna_{codigo}",
+            )
+        gerar = st.form_submit_button("📚 Gerar meu plano de estudos", type="primary")
+    if gerar:
+        st.session_state["etapa2_autoavaliacoes"][chave_carreira] = respostas_novas
+
+    plano = None
+    niveis_atuais = st.session_state["etapa2_autoavaliacoes"].get(chave_carreira)
+    if niveis_atuais is not None:
+        try:
+            plano = gerar_roadmap(
+                carreira_id=chave_carreira, niveis=niveis_atuais,
+                horas_semanais=st.session_state["etapa2_objetivos"]["horas_semanais"],
+                objetivo=st.session_state["etapa2_objetivos"]["objetivo"],
+                base=base, roteiros=carregar_roteiros(base=base),
+            )
+        except (OSError, ValueError, KeyError, json.JSONDecodeError) as erro:
+            st.error(f"Não foi possível montar o roadmap: {erro}")
+        else:
+            st.markdown("#### Lacunas de competências (skill gaps)")
+            a, b = st.columns(2)
+            a.metric("Índice orientativo de preparo", f"{plano.preparo_estimado:.1f}%")
+            b.metric("Semanas estimadas para cobrir lacunas", str(plano.total_semanas))
+            st.dataframe([
+                {"Competência": h.nome, "Seu nível": h.nivel_atual,
+                 "Meta Júnior": h.nivel_junior, "Faltam níveis": h.lacuna,
+                 "Situação": h.situacao} for h in plano.avaliacoes
+            ], hide_index=True)
+            st.caption(plano.aviso)
+
+            st.markdown("#### Roadmap personalizado")
+            st.write(
+                f"Disponibilidade informada: **{plano.horas_semanais} h/semana**. "
+                f"Objetivo: **{plano.objetivo}**. "
+                "O planejamento prioriza suas maiores lacunas."
+            )
+            if not plano.etapas:
+                st.success(
+                    "Você informou ter atingido as metas desta referência inicial. "
+                    "O próximo passo é praticar, validar suas habilidades e aprofundar os temas."
+                )
+            for etapa in plano.etapas:
+                with st.expander(
+                    f"{etapa.ordem}. {etapa.competencia} — "
+                    f"semana(s) {etapa.inicio_semana} a {etapa.fim_semana}",
+                    expanded=etapa.ordem == 1,
+                ):
+                    st.write(f"Estudo aproximado: **{etapa.horas_estimadas} horas**.")
+                    for topico in etapa.topicos:
+                        st.write(f"• {topico}")
+                    st.write(f"**Prática:** {etapa.atividade_pratica}")
+            st.markdown("**Projeto para o portfólio no GitHub**")
+            st.write(plano.projeto_portfolio)
+            st.markdown("**Certificações ou formações opcionais**")
+            for certificacao in plano.certificacoes_opcionais:
+                st.write(f"• {certificacao}")
+            st.caption("Certificações não são obrigatórias; verifique disponibilidade e custos atuais.")
+    else:
+        st.info("Preencha os níveis acima e clique em **Gerar meu plano de estudos**.")
+
     relatorio = montar_relatorio(
         base, st.session_state["etapa2_perfil"],
         st.session_state["etapa2_afinidades"],
         st.session_state["etapa2_objetivos"], resultado,
+        plano=plano,
     )
     st.download_button(
         "📥 Baixar diagnóstico em JSON",
@@ -233,7 +316,7 @@ def mostrar_resultado() -> None:
 with st.sidebar:
     st.header("🧭 Consultor de Carreiras")
     st.write("**Etapa 2:** diagnóstico por pesos e tratamento de incerteza.")
-    st.write("**10 carreiras · 13 afinidades · Top 3**")
+    st.write("**10 carreiras · 13 afinidades · Top 3 · Skill gaps**")
     st.caption("Python + Streamlit · base de conhecimento JSON externa")
     st.info("Ferramenta acadêmica e exploratória; não substitui orientação profissional.")
     st.caption("UNIPAC Barbacena — Inteligência Artificial")
@@ -285,8 +368,9 @@ with aba_metodo:
         "as regras Experta, permanece no repositório."
     )
     st.info(
-        "**Próximos módulos:** identificação das lacunas para nível Júnior "
-        "e geração de um roadmap de estudos individualizado."
+        "**Orientação profissional:** após o Top 3, o usuário autoavalia "
+        "as competências da trilha principal. O sistema compara as notas com "
+        "os requisitos Júnior do JSON e gera um roteiro por lacunas."
     )
     with st.expander("Mostrar as 13 dimensões avaliadas"):
         st.dataframe(

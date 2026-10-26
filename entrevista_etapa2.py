@@ -10,6 +10,7 @@ from dataclasses import asdict
 from typing import Any
 
 from motor_ponderado import ResultadoPonderado
+from modulo_roadmap import PlanoCarreira
 
 ETAPAS = ("Perfil pessoal", "Afinidades técnicas", "Objetivos de carreira")
 EXPERIENCIAS = (
@@ -84,6 +85,7 @@ def montar_relatorio(
     afinidades: dict[str, int],
     objetivos: dict[str, Any],
     resultado: ResultadoPonderado,
+    plano: PlanoCarreira | None = None,
 ) -> dict[str, Any]:
     """Monta um JSON transparente e sem dados pessoais identificáveis."""
     respostas = validar_afinidades(afinidades, base)
@@ -102,9 +104,11 @@ def montar_relatorio(
             "horas_semanais": objetivos["horas_semanais"],
         },
         "observacao_contexto": (
-            "Nesta versão, o ranking é calculado pelas 13 afinidades. "
-            "Experiência e objetivos compõem o contexto; serão usados no roadmap de outra etapa."
+            "O ranking é calculado pelas 13 afinidades. A orientação de estudos "
+            "considera a autoavaliação de conhecimentos, o objetivo e as horas disponíveis; "
+            "a experiência informada contextualiza o histórico do usuário."
         ),
+        "orientacao_profissional": plano.para_json() if plano is not None else None,
         "afinidades": [
             {
                 "dimensao": codigo,

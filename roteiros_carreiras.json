@@ -1,0 +1,340 @@
+{
+  "versao": "1.0",
+  "aviso": "O plano é sugestão educacional baseada em autoavaliação; não atesta qualificação para vaga. Certificações são opcionais; confirmar nomes, custos e disponibilidade com emissores.",
+  "trilhas": {
+    "backend": {
+      "certificacoes_opcionais": [
+        "PCEP – Certified Entry-Level Python Programmer (opcional; útil para fundamentos em Python)"
+      ],
+      "competencias": {
+        "backend_habilidade_1": {
+          "topicos": [
+            "Variáveis",
+            "funções",
+            "estruturas de dados e Git"
+          ],
+          "atividade_pratica": "Resolver exercícios de lógica e publicar soluções simples no GitHub",
+          "horas_por_nivel": 6
+        },
+        "backend_habilidade_2": {
+          "topicos": [
+            "Rotas HTTP",
+            "métodos",
+            "status",
+            "JSON e autenticação básica"
+          ],
+          "atividade_pratica": "Criar endpoints CRUD documentados e testar as respostas",
+          "horas_por_nivel": 9
+        },
+        "backend_habilidade_3": {
+          "topicos": [
+            "Consultas SQL",
+            "chaves",
+            "relacionamentos e parametrização"
+          ],
+          "atividade_pratica": "Modelar duas tabelas relacionadas e conectar a API ao banco",
+          "horas_por_nivel": 8
+        }
+      }
+    },
+    "frontend": {
+      "certificacoes_opcionais": [
+        "Meta Front-End Developer Professional Certificate (opcional; trilha de formação)"
+      ],
+      "competencias": {
+        "frontend_habilidade_1": {
+          "topicos": [
+            "Estrutura semântica HTML",
+            "CSS flexbox e responsividade"
+          ],
+          "atividade_pratica": "Criar uma página que funcione em celular e desktop",
+          "horas_por_nivel": 6
+        },
+        "frontend_habilidade_2": {
+          "topicos": [
+            "Funções",
+            "arrays",
+            "DOM",
+            "fetch e tratamento de eventos"
+          ],
+          "atividade_pratica": "Construir uma interface que consuma uma API pública",
+          "horas_por_nivel": 8
+        },
+        "frontend_habilidade_3": {
+          "topicos": [
+            "Acessibilidade",
+            "contraste",
+            "foco e formulários responsivos"
+          ],
+          "atividade_pratica": "Auditar e corrigir acessibilidade de uma página",
+          "horas_por_nivel": 7
+        }
+      }
+    },
+    "ciencia": {
+      "certificacoes_opcionais": [
+        "Google Advanced Data Analytics Professional Certificate (opcional; aprofundamento posterior)"
+      ],
+      "competencias": {
+        "ciencia_habilidade_1": {
+          "topicos": [
+            "Sintaxe Python",
+            "notebooks",
+            "Pandas e limpeza de dados"
+          ],
+          "atividade_pratica": "Analisar um conjunto de dados aberto com gráficos e relatório",
+          "horas_por_nivel": 7
+        },
+        "ciencia_habilidade_2": {
+          "topicos": [
+            "Probabilidade",
+            "distribuições",
+            "correlação e testes básicos"
+          ],
+          "atividade_pratica": "Comparar variáveis e explicar as limitações dos resultados",
+          "horas_por_nivel": 8
+        },
+        "ciencia_habilidade_3": {
+          "topicos": [
+            "Treino/teste",
+            "métricas",
+            "vazamento de dados e scikit-learn"
+          ],
+          "atividade_pratica": "Criar um classificador simples e avaliar suas métricas",
+          "horas_por_nivel": 10
+        }
+      }
+    },
+    "engenharia": {
+      "certificacoes_opcionais": [
+        "Microsoft Azure Data Fundamentals – DP-900 (opcional; fundamentos de dados)"
+      ],
+      "competencias": {
+        "engenharia_habilidade_1": {
+          "topicos": [
+            "SQL",
+            "agregações",
+            "joins e modelagem relacional"
+          ],
+          "atividade_pratica": "Consultar e organizar uma base relacional",
+          "horas_por_nivel": 7
+        },
+        "engenharia_habilidade_2": {
+          "topicos": [
+            "Extração",
+            "limpeza",
+            "transformação e carga automatizadas"
+          ],
+          "atividade_pratica": "Construir ETL de CSV para banco SQL com logs",
+          "horas_por_nivel": 9
+        },
+        "engenharia_habilidade_3": {
+          "topicos": [
+            "Orquestração",
+            "agendamento",
+            "qualidade e particionamento"
+          ],
+          "atividade_pratica": "Agendar pipeline diário e criar testes para a integridade",
+          "horas_por_nivel": 10
+        }
+      }
+    },
+    "seguranca": {
+      "certificacoes_opcionais": [
+        "ISC2 Certified in Cybersecurity (CC) (opcional; fundamentos de segurança)"
+      ],
+      "competencias": {
+        "seguranca_habilidade_1": {
+          "topicos": [
+            "TCP/IP",
+            "DNS",
+            "HTTP e conceitos de segmentação"
+          ],
+          "atividade_pratica": "Mapear protocolos de um laboratório próprio",
+          "horas_por_nivel": 7
+        },
+        "seguranca_habilidade_2": {
+          "topicos": [
+            "Terminal Linux",
+            "permissões",
+            "processos e logs"
+          ],
+          "atividade_pratica": "Administrar uma máquina de laboratório com usuários limitados",
+          "horas_por_nivel": 7
+        },
+        "seguranca_habilidade_3": {
+          "topicos": [
+            "OWASP Top 10",
+            "autenticação e práticas de mitigação"
+          ],
+          "atividade_pratica": "Avaliar um aplicativo de laboratório autorizado e documentar correções",
+          "horas_por_nivel": 10
+        }
+      }
+    },
+    "devops": {
+      "certificacoes_opcionais": [
+        "GitHub Actions Certification (opcional; depois de praticar CI/CD)"
+      ],
+      "competencias": {
+        "devops_habilidade_1": {
+          "topicos": [
+            "Comandos Linux",
+            "Git",
+            "branches e shell"
+          ],
+          "atividade_pratica": "Versionar scripts e automatizar tarefas de manutenção",
+          "horas_por_nivel": 7
+        },
+        "devops_habilidade_2": {
+          "topicos": [
+            "Build",
+            "testes e deploy automatizados por GitHub Actions"
+          ],
+          "atividade_pratica": "Configurar workflow de teste contínuo em repositório",
+          "horas_por_nivel": 9
+        },
+        "devops_habilidade_3": {
+          "topicos": [
+            "Dockerfile",
+            "imagens",
+            "volumes e redes locais"
+          ],
+          "atividade_pratica": "Colocar uma API simples em contêiner e testar sua execução",
+          "horas_por_nivel": 8
+        }
+      }
+    },
+    "cloud": {
+      "certificacoes_opcionais": [
+        "AWS Certified Cloud Practitioner (opcional; após estudar conceitos de nuvem)"
+      ],
+      "competencias": {
+        "cloud_habilidade_1": {
+          "topicos": [
+            "Redes",
+            "DNS",
+            "Linux e controle de acesso"
+          ],
+          "atividade_pratica": "Planejar rede e permissões para serviço de demonstração",
+          "horas_por_nivel": 7
+        },
+        "cloud_habilidade_2": {
+          "topicos": [
+            "Computação",
+            "armazenamento",
+            "identidade e custo de nuvem"
+          ],
+          "atividade_pratica": "Desenhar arquitetura básica com limites de orçamento",
+          "horas_por_nivel": 9
+        },
+        "cloud_habilidade_3": {
+          "topicos": [
+            "Infraestrutura como código",
+            "variáveis e estado"
+          ],
+          "atividade_pratica": "Descrever infraestrutura de laboratório em arquivos versionados",
+          "horas_por_nivel": 10
+        }
+      }
+    },
+    "mobile": {
+      "certificacoes_opcionais": [
+        "Curso de desenvolvimento Flutter ou React Native com certificado de conclusão (opcional; formação, não credencial profissional)"
+      ],
+      "competencias": {
+        "mobile_habilidade_1": {
+          "topicos": [
+            "Estrutura de widgets/componentes",
+            "navegação e estados"
+          ],
+          "atividade_pratica": "Criar tela de login e navegação de um aplicativo",
+          "horas_por_nivel": 9
+        },
+        "mobile_habilidade_2": {
+          "topicos": [
+            "HTTP",
+            "JSON",
+            "autenticação e estados de carregamento"
+          ],
+          "atividade_pratica": "Consumir uma API e tratar erros no celular/emulador",
+          "horas_por_nivel": 8
+        },
+        "mobile_habilidade_3": {
+          "topicos": [
+            "Testes unitários e de interface",
+            "permissões e boas práticas"
+          ],
+          "atividade_pratica": "Implementar testes e validar fluxos do aplicativo",
+          "horas_por_nivel": 7
+        }
+      }
+    },
+    "qa": {
+      "certificacoes_opcionais": [
+        "ISTQB Certified Tester Foundation Level – CTFL (opcional; fundamentos de testes)"
+      ],
+      "competencias": {
+        "qa_habilidade_1": {
+          "topicos": [
+            "Casos de teste",
+            "equivalência",
+            "limites e critérios de aceite"
+          ],
+          "atividade_pratica": "Elaborar plano de testes para aplicação simples",
+          "horas_por_nivel": 6
+        },
+        "qa_habilidade_2": {
+          "topicos": [
+            "Pytest ou Playwright",
+            "fixtures e asserções"
+          ],
+          "atividade_pratica": "Automatizar testes de um formulário de demonstração",
+          "horas_por_nivel": 9
+        },
+        "qa_habilidade_3": {
+          "topicos": [
+            "Relatórios de bugs",
+            "severidade",
+            "reprodução e rastreabilidade"
+          ],
+          "atividade_pratica": "Registrar e priorizar defeitos encontrados em laboratório",
+          "horas_por_nivel": 6
+        }
+      }
+    },
+    "produto": {
+      "certificacoes_opcionais": [
+        "Professional Scrum Product Owner I – PSPO I (opcional; após estudar produto e Scrum)"
+      ],
+      "competencias": {
+        "produto_habilidade_1": {
+          "topicos": [
+            "Histórias de usuário",
+            "entrevistas e critérios de aceite"
+          ],
+          "atividade_pratica": "Criar especificação breve de uma funcionalidade realista",
+          "horas_por_nivel": 7
+        },
+        "produto_habilidade_2": {
+          "topicos": [
+            "Valor",
+            "esforço",
+            "backlog",
+            "roadmap e prioridades"
+          ],
+          "atividade_pratica": "Priorizar backlog usando matriz valor x esforço",
+          "horas_por_nivel": 7
+        },
+        "produto_habilidade_3": {
+          "topicos": [
+            "Funil de conversão",
+            "retenção e experimentos"
+          ],
+          "atividade_pratica": "Definir métricas e hipótese de melhoria para produto fictício",
+          "horas_por_nivel": 8
+        }
+      }
+    }
+  }
+}
