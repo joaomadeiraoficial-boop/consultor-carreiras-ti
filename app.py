@@ -17,6 +17,9 @@ from entrevista_etapa2 import (
 )
 from motor_ponderado import avaliar_ponderado
 from modulo_roadmap import carregar_roteiros, gerar_roadmap
+from painel_resultados import (
+    analisar_proximidade, tabela_ranking, tabela_composicao_top3, pesos_destaque_top3,
+)
 
 BASE = Path(__file__).resolve().parent
 st.set_page_config(
@@ -183,13 +186,47 @@ def mostrar_resultado() -> None:
         "de conseguir emprego. Os valores não precisam somar 100%."
     )
 
-    st.markdown("#### Comparação de todas as carreiras")
-    tabela = [
-        {"Carreira": item.nome, "Compatibilidade (%)": item.percentual}
-        for item in resultado.ranking
-    ]
-    st.bar_chart(tabela, x="Carreira", y="Compatibilidade (%)")
-    st.dataframe(tabela, hide_index=True)
+    st.markdown("#### As dez carreiras, lado a lado")
+    tabela = tabela_ranking(resultado)
+    st.bar_chart(
+        tabela, x="Carreira", y="Compatibilidade (%)",
+        horizontal=True, sort=False, height=430,
+    )
+    with st.expander("Ver ranking completo em tabela"):
+        st.dataframe(tabela, hide_index=True)
+
+    proximidade = analisar_proximidade(resultado)
+    st.markdown("#### A decisão foi apertada?")
+    if proximidade.muito_proximas:
+        st.warning(proximidade.mensagem)
+    else:
+        st.info(proximidade.mensagem)
+    st.caption("Critério didático: diferença de até 5 pontos percentuais indica perfis próximos.")
+
+    st.markdown("#### De onde vêm os pontos do Top 3?")
+    composicao = tabela_composicao_top3(resultado)
+    st.bar_chart(
+        composicao, x="Carreira",
+        y=["Base (p.p.)", "Bônus (p.p.)", "Penalidades (p.p.)"],
+        horizontal=True, stack=False,
+    )
+    st.dataframe(composicao, hide_index=True)
+    st.caption(
+        "Base ponderada + bônus − penalidades, com resultado limitado a 0–100%. "
+        "As parcelas são mostradas separadamente para facilitar a auditoria."
+    )
+
+    with st.expander("Comparar os critérios mais valorizados pelas três trilhas"):
+        pesos = pesos_destaque_top3(resultado, base)
+        st.bar_chart(
+            pesos, x="Afinidade", y=[item.nome for item in resultado.top3],
+            horizontal=True, stack=False,
+        )
+        st.dataframe(pesos, hide_index=True)
+        st.caption(
+            "Os valores são pesos extraídos de regras_carreiras.json, "
+            "não novas notas atribuídas ao usuário."
+        )
 
     st.markdown("#### Por que esta carreira ficou em primeiro?")
     st.write(base["trilhas"][primeiro.identificador]["resumo"])
