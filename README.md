@@ -19,7 +19,9 @@ Na versão atual, o sistema:
 - Calcula compatibilidades por **pontuação ponderada**, com bônus e penalidades para situações específicas.
 - Apresenta um **Top 3 de carreiras**, além do ranking completo das dez opções.
 - Exibe gráficos e justificativas para que o resultado não pareça um palpite revestido de porcentagens.
-- Permite revisar respostas e baixar o diagnóstico em **JSON**.
+- Identifica **lacunas de competências para uma referência inicial de nível Júnior** com autoavaliação de 0 a 5.
+- Gera **roadmap personalizado** com estudos, projetos de portfólio, certificações opcionais e estimativas didáticas de tempo.
+- Permite revisar respostas e baixar o diagnóstico, incluindo o roadmap, em **JSON**.
 
 O motor original da primeira etapa, com **46 regras `@Rule` da biblioteca Experta**, permanece no repositório para consulta e comparação.
 
@@ -62,9 +64,9 @@ No Windows, quem tiver Python 3.11 instalado também pode executar `INICIAR_WIND
 2. **Afinidades técnicas:** dê notas de 1 a 5 às 13 atividades propostas; é possível voltar e alterar as respostas.
 3. **Objetivos de carreira:** indique seu propósito profissional, o tipo de contribuição que prefere e suas horas disponíveis para estudo.
 
-Ao concluir, o consultor apresenta o ranking, o gráfico comparativo e as regras que ajudam a explicar o resultado. O diagnóstico pode ser exportado em JSON.
+Ao concluir, o consultor apresenta o ranking, gráficos comparativos e os fatores que justificam o resultado. Em seguida, a pessoa autoavalia o que já sabe sobre a trilha recomendada e recebe uma sequência de estudos com exemplos de prática, portfólio e formações opcionais. O diagnóstico pode ser exportado em JSON.
 
-**Nota de transparência:** nesta versão, **as 13 afinidades determinam o ranking**. Experiência e objetivos são registrados no relatório, mas **ainda não alteram a pontuação**. Eles serão utilizados no módulo posterior de análise de competências e plano de estudos.
+**Nota de transparência:** as **13 afinidades determinam o ranking**. Experiência e objetivos não modificam essa pontuação. Já a autoavaliação de conhecimentos, as horas semanais e o objetivo declarado orientam o roadmap. Interesse por uma área e domínio técnico são aspectos diferentes — convém não confundi-los.
 
 ## O que acontece nos bastidores?
 
@@ -74,7 +76,9 @@ O funcionamento da **Etapa 2** segue uma sequência simples de explicar, embora 
 2. `base_conhecimento.py` lê e valida o arquivo `regras_carreiras.json`.
 3. `motor_ponderado.py` aplica os pesos de cada carreira, calcula a pontuação e considera bônus ou penalidades.
 4. O sistema ordena os resultados, resolve empates pelos critérios definidos e apresenta as três carreiras mais compatíveis.
-5. `app.py` exibe os resultados; `entrevista_etapa2.py` valida as respostas e organiza o relatório exportável.
+5. `painel_resultados.py` prepara gráficos, sinaliza empates e explica a composição da pontuação.
+6. `modulo_roadmap.py` compara os conhecimentos declarados às competências Júnior e consulta `roteiros_carreiras.json` para gerar o plano de estudos.
+7. `app.py` exibe a entrevista e os resultados; `entrevista_etapa2.py` valida as respostas e organiza o relatório exportável.
 
 As regras ficam fora do código do motor, de modo que a base de conhecimento possa ser estudada e ajustada sem misturar conceitos de carreira à lógica da aplicação. **Há método por trás do resultado, não magia por trás da tela.**
 
@@ -84,56 +88,62 @@ A **Etapa 1**, preservada em `motor.py`, utiliza fatos e regras da Experta. Ela 
 
 ```text
 consultor_carreiras_ti/
-├── app.py                       # Interface Streamlit em três etapas
-├── entrevista_etapa2.py         # Validação e relatório da entrevista
+├── app.py                       # Interface Streamlit com entrevista e resultados
+├── entrevista_etapa2.py         # Validação das respostas e relatório JSON
 ├── motor_ponderado.py           # Pesos, bônus, penalidades e Top 3
-├── regras_carreiras.json        # Conhecimento externo das dez trilhas
-├── base_conhecimento.py         # Leitura e validação do JSON
-├── simular_perfil_ponderado.py  # Demonstração do novo motor
-├── motor.py                     # Motor original: 46 regras Experta
-├── conhecimento.py              # Dados de apoio da Etapa 1
-├── personas.json                # Perfis de validação originais
-├── validar_personas.py          # Testes das personas da Etapa 1
-├── docs/                        # Matriz e diário técnico das etapas
+├── base_conhecimento.py         # Carregamento da base externa
+├── regras_carreiras.json        # Dez carreiras, dimensões e regras ponderadas
+├── modulo_roadmap.py            # Skill gaps, prioridades e plano de estudos
+├── roteiros_carreiras.json      # Conteúdos e projetos para as dez trilhas
+├── painel_resultados.py         # Gráficos e interpretação dos resultados
+├── verificar_entrega.py         # Verificação integrada da Etapa 2
+├── simular_perfil_ponderado.py  # Demonstração do diagnóstico no terminal
+├── simular_casos_limite.py      # Perfis ambíguos e situações de fronteira
+├── motor.py                     # Motor original: 46 regras da Experta
+├── conhecimento.py              # Apoio à Etapa 1
+├── docs/                        # Matriz, decisões técnicas e guia de evidências
 ├── tests/                       # Testes automatizados
-├── requirements.txt             # Bibliotecas necessárias
+├── requirements.txt             # Dependências
 ├── INICIAR_WINDOWS.bat          # Inicialização assistida no Windows
 └── README.md                    # Este pequeno mapa
 ```
 
 ## Testes: porque confiar é bom, verificar é melhor
 
-Para executar a demonstração do motor ponderado e os testes automatizados:
+No terminal da pasta do projeto:
 
 ```powershell
+python verificar_entrega.py
 python simular_perfil_ponderado.py
+python simular_casos_limite.py
 python -m unittest discover -s tests -v
 ```
 
-Os testes cobrem carregamento da base, validação de entradas, regras ponderadas, diferenciação de carreiras, perfis ambíguos e componentes de validação da entrevista. A aplicação também deve ser conferida manualmente no navegador: avançar pelas três etapas, voltar, modificar respostas e verificar o diagnóstico.
+O primeiro comando examina a integração das dez carreiras, a entrevista, o motor, os dados para gráficos, os roadmaps e a exportação JSON. O último executa os testes automatizados de todos os módulos, incluindo o motor da primeira etapa com Experta. Veja [`docs/etapa2_entrega_final.md`](docs/etapa2_entrega_final.md) para a relação entre critérios do enunciado e arquivos.
 
-Os documentos na pasta [`docs/`](docs/) registram as decisões e os testes realizados em cada incremento. O código, por sua vez, oferece ao leitor a oportunidade de não depender apenas da palavra do autor.
+**A interface precisa de uma conferência no navegador:** complete as três etapas, volte para alterar uma resposta, veja o Top 3, gere o roadmap e baixe o relatório. Nenhum teste de terminal deve ser confundido com essa inspeção visual.
+
+Para facilitar a correção, use o [`guia de capturas de tela`](docs/guia_evidencias.md). O professor pode examinar o trabalho sem precisar iniciar a aplicação — um gesto de civilidade em meio a dezenas de repositórios.
 
 ## Diário de desenvolvimento
 
 | Data | Evolução | Registro |
 |---|---|---|
-| **22/10/2026** | Sistema original com regras Experta e entrevista objetiva | `motor.py` e [`docs/resumo_matriz.md`](docs/resumo_matriz.md) |
-| **24/10/2026** | Separação do conhecimento em JSON | [`docs/etapa2_dia1.md`](docs/etapa2_dia1.md) |
-| **25/10/2026 — Dia 2** | Inferência ponderada, bônus, penalidades e Top 3 | [`docs/etapa2_dia2.md`](docs/etapa2_dia2.md) |
-| **25/10/2026 — Dia 3** | Entrevista em três etapas integrada ao Streamlit | [`docs/etapa2_dia3.md`](docs/etapa2_dia3.md) |
+| **22/10/2026** | Sistema original com 46 regras Experta | [`docs/resumo_matriz.md`](docs/resumo_matriz.md) |
+| **24/10/2026** | Conhecimento separado em JSON | [`docs/etapa2_dia1.md`](docs/etapa2_dia1.md) |
+| **25/10/2026** | Inferência ponderada e ranking Top 3 | [`docs/etapa2_dia2.md`](docs/etapa2_dia2.md) |
+| **25/10/2026** | Entrevista gradual em três etapas | [`docs/etapa2_dia3.md`](docs/etapa2_dia3.md) |
+| **26/10/2026** | Skill gaps e roadmap personalizado | [`docs/etapa2_dia4.md`](docs/etapa2_dia4.md) |
+| **26/10/2026** | Gráficos comparativos e casos-limite | [`docs/etapa2_dia5.md`](docs/etapa2_dia5.md) |
+| **27/10/2026** | Revisão, verificações de integração e preparação da entrega | [`docs/etapa2_entrega_final.md`](docs/etapa2_entrega_final.md) |
 
-O histórico de commits registra a evolução do projeto. Cada mudança funcional deve ser testada antes de ser publicada — uma disciplina que se aprende melhor praticando do que prometendo.
+A tabela descreve a sequência de desenvolvimento planejada e documentada; o histórico real de alterações e horários deve ser conferido na aba de commits do GitHub. Registrar mudanças claras vale mais do que produzir uma quantidade teatral de commits.
 
-## Próximos capítulos
+## A reta final
 
-A Etapa 2 ainda prevê:
+Antes de entregar, execute a suíte de testes no seu computador e produza **capturas reais** da interface, do roadmap, dos gráficos e dos resultados dos testes. A documentação não incorpora imagens fictícias. Se a atividade pedir capturas anexadas na plataforma da faculdade, envie-as juntamente com o link público; tê-las só no GitHub pode não bastar.
 
-- **Análise de lacunas (*skill gaps*):** comparar os conhecimentos informados com competências esperadas de um profissional Júnior.
-- **Roadmap personalizado:** organizar estudos, tecnologias, certificações pertinentes e projetos para portfólio.
-- **Validação final:** ampliar os testes de robustez e revisar a experiência completa.
-
-Essas funcionalidades **ainda não estão prontas nesta versão**. O README será atualizado conforme forem implementadas e testadas.
+**Prazo informado:** 29 de outubro de 2026, às 19h (horário de Brasília).
 
 ## Considerações finais
 

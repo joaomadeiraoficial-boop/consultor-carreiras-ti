@@ -126,7 +126,7 @@ def mostrar_afinidades() -> None:
 
 def mostrar_objetivos() -> None:
     st.subheader("3. Objetivos de carreira")
-    st.write("Esta parte contextualiza o diagnóstico e servirá de base para o roadmap personalizado.")
+    st.write("Esta parte contextualiza o diagnóstico e ajuda a personalizar o roteiro de estudos.")
     previo = st.session_state["etapa2_objetivos"]
     with st.form("form_etapa2_objetivos"):
         objetivo = st.selectbox(
@@ -143,7 +143,7 @@ def mostrar_objetivos() -> None:
         )
         st.caption(
             "O ranking de hoje utiliza as 13 notas de afinidade. "
-            "Experiência e objetivos serão usados no módulo de roadmap da próxima etapa."
+            "O objetivo e as horas disponíveis ajudam a orientar o roadmap; a experiência contextualiza seu perfil."
         )
         voltar = st.form_submit_button("← Voltar às afinidades")
         diagnosticar = st.form_submit_button("🔎 Calcular minha compatibilidade", type="primary")
